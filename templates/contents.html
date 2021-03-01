@@ -42,7 +42,53 @@
             font-size: 20px;
             color: black;
         }
+
     </style>
+
+    <script>
+// 조항덕 작성 시작
+        order_listing();
+
+        function submit_order() {
+            let name = $('#name').val()
+            let count = $('#count').val()
+
+            $.ajax({
+                type: "POST",
+                url: "/order",
+                data: {name_give: name, count_give: count},
+                success: function (response) {
+                    alert(response["msg"]);
+                    window.location.reload();
+                }
+            })
+        }
+
+        function order_listing() {
+            $.ajax({
+                type: "GET",
+                url: "/order",
+                data: {},
+                success: function (response) {
+                    let orders = response['all_orders']
+                    for (let i = 0; i < orders.length; i++) {
+                        let name = orders[i]['comment']
+                        let count = orders[i]['count']
+
+                        console.log(orders)
+
+                        let temp_html = ` <tr>
+                                            <td>${comment}</td>
+                                            <td>${count}</td>
+                                        </tr>`
+
+                        $('#order-box').append(temp_html)
+                    }
+                }
+            })
+        }
+    //조항덕 작성 끝
+    </script>
 
 
     <!-- Custom styles for this template -->
@@ -72,21 +118,18 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">저장하기</button>
+                        <button onclick="submit_order()" type="button" class="btn btn-primary">저장하기</button>
                     </div>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Contents</h5>
                         <p class="card-text">
                             <tr>
-                                <table class="table">
+                                <table id='comment' class="table">
                         <thead>
                         <tr>
-                            <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">번호</font></font>
-                            </th>
                             <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">내용</font></font>
                             </th>
                             <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">아이디</font></font></th>
@@ -94,7 +137,6 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td>1</td>
                             <td>오늘도 스파르타한 하루였습니다.</td>
                             <td>조항덕</td>
                         </tr>
