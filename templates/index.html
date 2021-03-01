@@ -38,17 +38,71 @@
                 font-size: 3.5rem;
             }
         }
+
+
+        .X {
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border: 10px solid rgba(0, 0, 0, .125);
+            height: 16rem;
+            flex: 1 1 auto;
+            /*z-index: 2*/
+        }
+
+        .X {
+            display: inline-block;
+            font-weight: 600;
+            line-height: 1.5;
+            color: #212529;
+            text-align: center;
+            text-decoration: none;
+            cursor: zoom-in;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            /*user-select: none;*/
+            /*background-color: transparent;*/
+            border: 1px solid transparent;
+            padding: .375rem .75rem;
+            font-size: 2rem;
+            border-radius: .25rem;
+            transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .X {
+                transition: none
+            }
+        }
+
+        .X:hover {
+            color: #fff;
+            background-color: #0b5ed7;
+            border-color: #0a58ca;
+            box-shadow: 0 0 1rem #0b5ed7;
+        }
+
+
     </style>
 
 
-    <!-- Custom styles for this template -->
-    <link href="cover.css" rel="stylesheet">
+    <SCRIPT>
+        function hey() {
+            open('https://www.notion.so/99-35-31e772f7e01942fe920ac4647103dee0')
+        }
+    </SCRIPT>
 
-    </script>
+
+    <!-- Custom styles for this template-->
+    <link href="cover.css" rel="stylesheet">
 </head>
 <body class="d-flex h-100 text-center text-white bg-dark">
 
-<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+<div class="d-flex w-100 h-100 p-3 mx-auto flex-column">
     <header class="mb-auto">
         <div>
             <h3 class="float-md-start mb-0"><a href="#">H9C</a></h3>
@@ -61,12 +115,42 @@
     </header>
 
     <main class="px-3">
-        <h1>Cover your page.</h1>
-        <p class="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the
-            text, and add your own fullscreen background photo to make it your own.</p>
-        <p class="lead">
-            <a href="#" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Learn more</a>
-        </p>
+        <!--        <h1>Cover your page.</h1>
+                <p class="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the
+                    text, and add your own fullscreen background photo to make it your own.</p>
+                <p class="lead">
+                    <a href="#" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Learn more</a>
+                </p>-->
+
+        <div class="container">
+            <!-- Stack the columns on mobile by making one full-width and the other half-width -->
+            <div class="row" id="cards-box">
+                <div class="X col-4" onclick="hey()">
+                    GotoNotion
+                </div>
+                <div class="X col-4">
+                    chapter1
+                </div>
+                <div class="X col-4">
+                    chapter1
+                </div>
+                <div class="X col-4">
+                    chapter1
+                </div>
+                <div class="X col-4">
+                    chapter1
+                </div>
+                <div class="X col-4">
+                    chapter1
+                </div>
+                <div class="X col-4">
+                    chapter1
+                </div>
+                <div class="X col-4">
+                    chapter1
+                </div>
+            </div>
+        </div>
     </main>
 
     <footer class="mt-auto text-white-50">
