@@ -17,6 +17,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
             crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <title>H9C</title>
 
     <style>
@@ -143,6 +145,14 @@
         }
     </SCRIPT>
 
+    <script>
+        function sign_out() {
+            $.removeCookie('mytoken', {path: '/'});
+            alert('로그아웃!')
+            window.location.href = "/login"
+        }
+    </script>
+
 
     <!-- Custom styles for this template-->
     <!--    //<link href="cover.css" rel="stylesheet">-->
@@ -156,7 +166,7 @@
         <div>
             <h3 class="float-md-start mb-0" onclick="reload()"><a href="#">H9C</a></h3>
             <nav class="nav nav-masthead justify-content-center float-md-end">
-                <a class="nav-link active" aria-current="page" href="login.html">LOGIN</a>
+                <a href="#" class="nav-link active" aria-current="page" onclick="sign_out()" >LOGOUT</a>
             </nav>
         </div>
     </header>
