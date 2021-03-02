@@ -20,6 +20,11 @@
                 integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
                 crossorigin="anonymous"></script>
 
+        <!-- Bootstrap core CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+              crossorigin="anonymous">
+
         <!-- 구글폰트 -->
         <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
 
@@ -94,13 +99,40 @@
             }
 
             .img-fluid {
-                width: 1500px;
+                width: 1300px;
+                margin-top: 100px;
+            }
+
+            .info {
+                color: white;
+            }
+
+            .table {
+                color: white;
+            }
+
+            .float-md-start {
+                width: 50px;
+                color: white;
+            }
+
+            .nav-link {
+                color: white;
+                text-underline: white;
             }
         </style>
     </head>
 
-    <body>
-        <div class="container">
+    <body class="bg-dark">
+        <div>
+            <h3 class="float-md-start mb-0"><a href="#">H9C</a></h3>
+            <nav class="nav nav-masthead justify-content-center float-md-end">
+                <!--        <a class="nav-link active" aria-current="page" href="#">Home</a>-->
+                <!--        <a class="nav-link" href="#">Features</a>-->
+                <a class="nav-link active" aria-current="page" href="#">LOGIN</a>
+            </nav>
+        </div>
+        <div class="container" >
             <img src="https://t1.daumcdn.net/cfile/tistory/99CA7F4A5A6ACA1018"
                  class="img-fluid" alt="Responsive image">
             <div class="info">
@@ -135,8 +167,8 @@
                     <thead>
                     <tr>
                         <th scope="col">제목</th>
-                        <th scope="col">저자</th>
-                        <th scope="col">리뷰</th>
+                        <th scope="col">닉네임</th>
+                        <th scope="col">코멘트</th>
                     </tr>
                     </thead>
                     <tbody id="reviews-box">
