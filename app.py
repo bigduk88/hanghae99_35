@@ -15,14 +15,10 @@ SECRET_KEY = 'SPARTA'
 client = MongoClient('mongodb://52.79.73.226', 27017, username="test", password="test")
 db = client.dbsparta_plus
 
+
 @app.route('/cover')
 def css():
     return render_template('cover.css')
-
-
-@app.route('/contents')
-def content():
-    return render_template('contents.html')
 
 @app.route('/')
 def home():
@@ -36,15 +32,29 @@ def home():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
+@app.route('/contents')
+def content():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload["id"]})
+        return render_template('contents.html', user_info=user_info)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
+
+
 @app.route('/login')
 def login():
     msg = request.args.get("msg")
     return render_template('login.html', msg=msg)
 
-
-@app.route('/indexpage')
-def indexpage():
-    return render_template('index.html')
+#
+# @app.route('/indexpage')
+# def indexpage():
+#     return render_template('index.html')
 
 
 @app.route('/sign_in', methods=['POST'])
@@ -90,50 +100,6 @@ def check_dup():
     return jsonify({'result': 'success', 'exists': exists})
 
 
-# @app.route('/update_profile', methods=['POST'])
-# def save_img():
-#     token_receive = request.cookies.get('mytoken')
-#     try:
-#         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-#         # 프로필 업데이트
-#         return jsonify({"result": "success", 'msg': '프로필을 업데이트했습니다.'})
-#     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-#         return redirect(url_for("home"))
-
-
-# @app.route('/posting', methods=['POST'])
-# def posting():
-#     token_receive = request.cookies.get('mytoken')
-#     try:
-#         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-#         # 포스팅하기
-#         return jsonify({"result": "success", 'msg': '포스팅 성공'})
-#     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-#         return redirect(url_for("home"))
-
-
-# @app.route("/get_posts", methods=['GET'])
-# def get_posts():
-#     token_receive = request.cookies.get('mytoken')
-#     try:
-#         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-#         # 포스팅 목록 받아오기
-#         return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다."})
-#     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-#         return redirect(url_for("home"))
-#
-#
-# @app.route('/update_like', methods=['POST'])
-# def update_like():
-#     token_receive = request.cookies.get('mytoken')
-#     try:
-#         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-#         # 좋아요 수 변경
-#         return jsonify({"result": "success", 'msg': 'updated'})
-#     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-#         return redirect(url_for("home"))
-
-
 # if __name__ == '__main__':
 #     app.run('0.0.0.0', port=5000, debug=True)
 
@@ -149,9 +115,9 @@ def check_dup():
 #
 # client = MongoClient('localhost', 27017)
 # db = client.dbsparta
-#
-#
-# ## HTML을 주는 부분
+
+
+## HTML을 주는 부분
 # @app.route('/')
 # def home():
 #     return render_template('contents.html')
@@ -181,10 +147,14 @@ def read_reviews():
     return jsonify({'all_reviews': reviews})
 
 
-if __name__ == '__main__':
-    app.run('0.0.0.0', port=5000, debug=True)
 
 
 ######################################
 # 조항덕 게시판 글 등록 api 끝
 #####################################
+
+
+
+
+if __name__ == '__main__':
+    app.run('0.0.0.0', port=5000, debug=True)
