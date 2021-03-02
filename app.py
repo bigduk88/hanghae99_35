@@ -15,6 +15,14 @@ SECRET_KEY = 'SPARTA'
 client = MongoClient('mongodb://52.79.73.226', 27017, username="test", password="test")
 db = client.dbsparta_plus
 
+@app.route('/cover')
+def css():
+    return render_template('cover.css')
+
+
+@app.route('/contents')
+def content():
+    return render_template('contents.html')
 
 @app.route('/')
 def home():
@@ -22,12 +30,11 @@ def home():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
-        return render_template('login.html', user_info=user_info)
+        return render_template('index.html', user_info=user_info)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
-
 
 @app.route('/login')
 def login():
@@ -127,27 +134,27 @@ def check_dup():
 #         return redirect(url_for("home"))
 
 
-if __name__ == '__main__':
-    app.run('0.0.0.0', port=5000, debug=True)
+# if __name__ == '__main__':
+#     app.run('0.0.0.0', port=5000, debug=True)
 
 ######################################
 # 조항덕 게시판 글 등록 api 시작
 ######################################
 
-from flask import Flask, render_template, jsonify, request
-
-app = Flask(__name__)
-
-from pymongo import MongoClient
-
-client = MongoClient('localhost', 27017)
-db = client.dbsparta
-
-
-## HTML을 주는 부분
-@app.route('/')
-def home():
-    return render_template('contents.html')
+# from flask import Flask, render_template, jsonify, request
+#
+# app = Flask(__name__)
+#
+# from pymongo import MongoClient
+#
+# client = MongoClient('localhost', 27017)
+# db = client.dbsparta
+#
+#
+# ## HTML을 주는 부분
+# @app.route('/')
+# def home():
+#     return render_template('contents.html')
 
 
 ## API 역할을 하는 부분
@@ -181,13 +188,3 @@ if __name__ == '__main__':
 ######################################
 # 조항덕 게시판 글 등록 api 끝
 #####################################
-
-
-@app.route('/cover')
-def css():
-    return render_template('cover.css')
-
-
-@app.route('/contents')
-def content():
-    return render_template('contents.html')
