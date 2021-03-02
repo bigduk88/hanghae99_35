@@ -3,18 +3,21 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="description" content="35조 프로젝트!">
     <meta name="generator" content="Hugo 0.80.0">
-    <title>H9C</title>
 
-
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/cover/">
-
+    <!-- 이 템플릿에서 시작했습니다. https://getbootstrap.com/docs/5.0/examples/cover/ -->
 
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <!-- ajax, jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- 이것도 ajax 필요 스크립트? -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <title>H9C</title>
 
     <style>
         .bd-placeholder-img {
@@ -31,67 +34,169 @@
             }
         }
 
+
+        .X {
+            text-anchor: middle;
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border: 10px solid rgba(0, 0, 0, .125);
+            height: 28vh;
+            flex: auto;
+            /*z-index: 2*/
+        }
+
+        .X {
+            display: inline-block;
+            font-weight: 100;
+            line-height: 1.5;
+            color: #212529;
+            text-align: center;
+            text-decoration: none;
+            cursor: zoom-in;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            /*user-select: none;*/
+            /*background-color: transparent;*/
+            border: 1px solid transparent;
+            padding: .375rem .75rem;
+            font-size: 1.5rem;
+            border-radius: .25rem;
+            transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .X {
+                transition: none
+            }
+        }
+
+        .X:hover {
+            color: #fff;
+            background-color: #0b5ed7;
+            border-color: #0a58ca;
+            box-shadow: 0 0 1rem #0b5ed7;
+            font-weight: 400;
+        }
+
+        .mx-auto-all {
+            margin-top: 7vh
+        }
+
         .cover-container {
             max-width: 60rem;
         }
+
+        .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+            width: 100%;
+            padding-right: var(--bs-gutter-x, .75rem);
+            padding-left: var(--bs-gutter-x, .75rem);
+            margin-right: auto;
+            margin-left: auto
+        }
+
+        @media (min-width: 576px) {
+            .container, .container-sm {
+                max-width: 540px
+            }
+        }
+
+        @media (min-width: 768px) {
+            .container, .container-md, .container-sm {
+                max-width: 720px
+            }
+        }
+
+        @media (min-width: 992px) {
+            .container, .container-lg, .container-md, .container-sm {
+                max-width: 960px
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .container, .container-lg, .container-md, .container-sm, .container-xl {
+                max-width: 1140px
+            }
+        }
+
+        @media (min-width: 1400px) {
+            .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+                max-width: 1320px
+            }
+        }
+
+
     </style>
 
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossOrigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossOrigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossOrigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-
-    <script>
-        function sign_out() {
-            $.removeCookie('mytoken', {path: '/'});
-            alert('로그아웃!')
-            window.location.href = "/login"
+    <SCRIPT>
+        function hey() {
+            open('https://www.notion.so/99-35-31e772f7e01942fe920ac4647103dee0')
         }
-    </script>
 
-    <script>
-        function indexpage() {
-            window.location.href = "/indexpage"
+        function reload() {
+            window.location.reload()
         }
-    </script>
+    </SCRIPT>
 
+
+    <!-- Custom styles for this template-->
+    <!--    //<link href="cover.css" rel="stylesheet">-->
 
 
 </head>
 <body class="d-flex h-100 text-center text-white bg-dark">
 
-<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+<div class="cover-container w-100 h-100 p-3 mx-auto">
     <header class="mb-auto">
         <div>
-            <h3 class="float-md-start mb-0"><a href="#" onclick="indexpage()">H9C</a></h3>
+            <h3 class="float-md-start mb-0" onclick="reload()"><a href="#">H9C</a></h3>
             <nav class="nav nav-masthead justify-content-center float-md-end">
-
-                <a href="#" class="nav-link active" aria-current="page" onclick="sign_out()" >LOGOUT</a>
-<!--                <button onclick="sign_out()">로그아웃</button>-->
+                <a class="nav-link active" aria-current="page" href="login.html">LOGIN</a>
             </nav>
         </div>
     </header>
 
     <main class="px-3">
-        <h1>Cover your page.</h1>
-        <p class="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the
-            text, and add your own fullscreen background photo to make it your own.</p>
-        <p class="lead">
-            <a href="#" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Learn more</a>
-        </p>
+
+        <div class="container mx-auto-all">
+            <!-- Stack the columns on mobile by making one full-width and the other half-width -->
+            <div class="row" id="cards-box">
+                <div class="X col-4" onclick="hey()">
+                    GotoNotion
+                </div>
+                <div class="X col-4" onclick="">
+                    chapter1
+                </div>
+                <div class="X col-4" onclick="">
+                    chapter1
+                </div>
+                <div class="X col-4" onclick="">
+                    chapter1
+                </div>
+                <div class="X col-4" onclick="">
+                    chapter1
+                </div>
+                <div class="X col-4" onclick="">
+                    chapter1
+                </div>
+                <div class="X col-4" onclick="">
+                    chapter1
+                </div>
+                <div class="X col-4" onclick="">
+                    chapter1
+                </div>
+            </div>
+        </div>
     </main>
 
+    <footer class="mt-auto text-white-50">
+        <!--    <p>Cover template for <a href="https://getbootstrap.com/" class="text-white">Bootstrap</a>, by <a href="https://twitter.com/mdo" class="text-white">@mdo</a>.</p>-->
+    </footer>
 </div>
 
 
