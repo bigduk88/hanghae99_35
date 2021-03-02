@@ -1,169 +1,149 @@
-<!doctype html>
-<html lang="en" class="h-100">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.80.0">
-    <title>H9C</title>
+<!DOCTYPE html>
+<html lang="ko">
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/cover/">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" crossorigin="anonymous"></script>
+    <head>
+        <!-- Webpage Title -->
+        <title>H9C</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <style>
-        .bd-placeholder-img {
-            font-size: 1.125rem;
-            text-anchor: middle;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
-        }
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+              crossorigin="anonymous">
 
-        @media (min-width: 768px) {
-            .bd-placeholder-img-lg {
-                font-size: 3.5rem;
-            }
-        }
+        <!-- JS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                crossorigin="anonymous"></script>
 
-        .pagenum {
-            margin: auto;
+        <!-- 구글폰트 -->
+        <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
 
-        }
+        <script type="text/javascript">
 
-        .modal-body {
-            font-size: 20px;
-            color: black;
-        }
+            $(document).ready(function () {
+                $("#reviews-box").html("");
+                showReview();
+            });
 
-    </style>
+            function makeReview() {
+                let title = $('#title').val()
+                let author = $('#author').val()
+                let review = $('#bookReview').val()
 
-    <script>
-// 조항덕 작성 시작
-        order_listing();
-
-        function submit_order() {
-            let name = $('#name').val()
-            let count = $('#count').val()
-
-            $.ajax({
-                type: "POST",
-                url: "/order",
-                data: {name_give: name, count_give: count},
-                success: function (response) {
-                    alert(response["msg"]);
-                    window.location.reload();
-                }
-            })
-        }
-
-        function order_listing() {
-            $.ajax({
-                type: "GET",
-                url: "/order",
-                data: {},
-                success: function (response) {
-                    let orders = response['all_orders']
-                    for (let i = 0; i < orders.length; i++) {
-                        let name = orders[i]['comment']
-                        let count = orders[i]['count']
-
-                        console.log(orders)
-
-                        let temp_html = ` <tr>
-                                            <td>${comment}</td>
-                                            <td>${count}</td>
-                                        </tr>`
-
-                        $('#order-box').append(temp_html)
+                $.ajax({
+                    type: "POST",
+                    url: "/review",
+                    data: {title_give:title, author_give:author, review_give: review},
+                    success: function (response) {
+                        alert(response["msg"]);
+                        window.location.reload();
                     }
-                }
-            })
-        }
-    //조항덕 작성 끝
-    </script>
+                })
+            }
 
+            function showReview() {
+                $.ajax({
+                    type: "GET",
+                    url: "/review",
+                    data: {},
+                    success: function (response) {
+                        let reviews = response['all_reviews']
+                        for (let i =0; i < reviews.length; i++) {
+                            let title = reviews[i]['title']
+                            let author = reviews[i]['author']
+                            let review = reviews[i]['review']
 
-    <!-- Custom styles for this template -->
-    <link href="cover.css" rel="stylesheet">
-</head>
-<body class="d-flex h-100 text-center text-white bg-dark">
+                            let temp_html = `<tr>
+                                                <td>${title}</td>
+                                                <td>${author}</td>
+                                                <td>${review}</td>
+                                            </tr>`
+                            $('#reviews-box').append(temp_html)
+                        }
+                    }
+                })
+            }
+        </script>
 
-<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-    <header class="mb-auto">
-        <div>
-            <h3 class="float-md-start mb-0"><a href="#">H9C</a></h3>
-            <nav class="nav nav-masthead justify-content-center float-md-end">
-                <!--        <a class="nav-link active" aria-current="page" href="#">Home</a>-->
-                <!--        <a class="nav-link" href="#">Features</a>-->
-                <a class="nav-link active" aria-current="page" href="#">LOGIN</a>
-            </nav>
-        </div>
-    </header>
+        <style type="text/css">
+            * {
+                font-family: "Do Hyeon", sans-serif;
+            }
 
-    <main>
-        <div class="row">
-            <div class="col-6" class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="card">
-                            <textarea placeholder="내용을 입력하세요."></textarea>
-                        </div>
+            h1,
+            h5 {
+                display: inline;
+            }
+
+            .info {
+                margin-top: 20px;
+                margin-bottom: 20px;
+            }
+
+            .review {
+                text-align: center;
+            }
+
+            .reviews {
+                margin-top: 100px;
+            }
+
+            .img-fluid {
+                width: 1500px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <img src="https://t1.daumcdn.net/cfile/tistory/99CA7F4A5A6ACA1018"
+                 class="img-fluid" alt="Responsive image">
+            <div class="info">
+                <h1>항해에서 느낀점을 적어주세요!</h1>
+                <p>항해를 하며 어려웠던 점이나 재미 있었던점, 기억하고 싶은 것들을 남겨두면 어떨까요?</p>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">제목</span>
                     </div>
-                    <div class="modal-footer">
-                        <button onclick="submit_order()" type="button" class="btn btn-primary">저장하기</button>
+                    <input type="text" class="form-control" id="title">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">닉네임</span>
                     </div>
+                    <input type="text" class="form-control" id="author">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">코멘트</span>
+                    </div>
+                    <textarea class="form-control" id="bookReview"
+                              cols="30"
+                              rows="5" placeholder="140자까지 입력할 수 있습니다."></textarea>
+                </div>
+                <div class="review">
+                    <button onclick="makeReview()" type="button" class="btn btn-primary">리뷰 작성하기</button>
                 </div>
             </div>
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-body">
-                        <p class="card-text">
-                            <tr>
-                                <table id='comment' class="table">
-                        <thead>
-                        <tr>
-                            <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">내용</font></font>
-                            </th>
-                            <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">아이디</font></font></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>오늘도 스파르타한 하루였습니다.</td>
-                            <td>조항덕</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                            </tr>
-                        </p>
-                    </div>
-                    <nav class = "pagenum" aria-label="Page navigation example">
-                        <ul class="pagination">
-                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                        </ul>
-                    </nav>
-                </div>
+           <div class="reviews">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">제목</th>
+                        <th scope="col">저자</th>
+                        <th scope="col">리뷰</th>
+                    </tr>
+                    </thead>
+                    <tbody id="reviews-box">
+                    </tbody>
+                </table>
             </div>
         </div>
-    </main>
+    </body>
 
-    <footer class="mt-auto text-white-50">
-        <!--    <p>Cover template for <a href="https://getbootstrap.com/" class="text-white">Bootstrap</a>, by <a href="https://twitter.com/mdo" class="text-white">@mdo</a>.</p>-->
-    </footer>
-</div>
-
-
-</body>
 </html>
