@@ -12,7 +12,7 @@ app.config['UPLOAD_FOLDER'] = "./static/profile_pics"
 
 SECRET_KEY = 'SPARTA'
 
-client = MongoClient('mongodb://52.79.73.226', 27017, username="test", password="test")
+client = MongoClient('mongodb://localhost', 27017)
 db = client.dbsparta_plus
 
 
@@ -44,18 +44,10 @@ def content():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
-
-
 @app.route('/login')
 def login():
     msg = request.args.get("msg")
     return render_template('login.html', msg=msg)
-
-#
-# @app.route('/indexpage')
-# def indexpage():
-#     return render_template('index.html')
-
 
 @app.route('/sign_in', methods=['POST'])
 def sign_in():
@@ -79,7 +71,6 @@ def sign_in():
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
-
 @app.route('/sign_up/save', methods=['POST'])
 def sign_up():
     username_receive = request.form['username_give']
@@ -92,36 +83,14 @@ def sign_up():
     db.users.insert_one(doc)
     return jsonify({'result': 'success'})
 
-
 @app.route('/sign_up/check_dup', methods=['POST'])
 def check_dup():
     username_receive = request.form['username_give']
     exists = bool(db.users.find_one({"username": username_receive}))
     return jsonify({'result': 'success', 'exists': exists})
 
-
-# if __name__ == '__main__':
-#     app.run('0.0.0.0', port=5000, debug=True)
-
 ######################################
-# 조항덕 게시판 글 등록 api 시작
-######################################
-
-# from flask import Flask, render_template, jsonify, request
-#
-# app = Flask(__name__)
-#
-# from pymongo import MongoClient
-#
-# client = MongoClient('localhost', 27017)
-# db = client.dbsparta
-
-
-## HTML을 주는 부분
-# @app.route('/')
-# def home():
-#     return render_template('contents.html')
-
+# 게시판 글 등록 api 시작
 
 ## API 역할을 하는 부분
 @app.route('/review', methods=['POST'])
@@ -140,20 +109,12 @@ def write_review():
 
     return jsonify({'msg': '등록완료!'})
 
-
 @app.route('/review', methods=['GET'])
 def read_reviews():
     reviews = list(db.contenst.find({}, {'_id': False}))
     return jsonify({'all_reviews': reviews})
 
-
-
-
 ######################################
-# 조항덕 게시판 글 등록 api 끝
-#####################################
-
-
 
 
 if __name__ == '__main__':
