@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -200,4 +201,215 @@
 </div>
 </body>
 
+=======
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <!-- Webpage Title -->
+    <title>H9C</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+          crossorigin="anonymous">
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+    <script>
+        function sign_out() {
+            $.removeCookie('mytoken', {path: '/'});
+            alert('로그아웃!')
+            window.location.href = "/login"
+        }
+    </script>
+
+    <script>
+        function reload() {
+            window.location.href = "/"
+        }
+    </script>
+
+    <script>
+        let word = "{{ word }}"
+        $(document).ready(function () {
+            get_examples()
+        })
+
+        function get_examples() {
+            $("#example-list").empty()
+            $.ajax({
+                type: "GET",
+                url: `/api/get_examples?word_give=${word}`,
+                data: {},
+                success: function (response) {
+                    let examples = response["examples"];
+                    for (let i = 0; i < examples.length; i++) {
+                        let example = examples[i]["example"];
+                        console.log(example)
+                        let html_temp = `<li id="ex-${i}">${example}&nbsp;&nbsp;&nbsp;<a
+                            href="javascript:delete_ex(${i})">delete</a></li>`
+                        $("#example-list").append(html_temp)
+                    }
+                }
+            });
+        }
+
+        function add_ex() {
+            let new_ex = $('#new-example').val();
+            if (!new_ex.toLowerCase().includes(word.toLowerCase())) {
+                alert(`the word '${word}' is not included.`);
+                return;
+            }
+            console.log(new_ex)
+            $.ajax({
+                type: "POST",
+                url: `/api/save_ex`,
+                data: {
+                    word_give: word,
+                    example_give: new_ex
+                },
+                success: function (response) {
+                    get_examples();
+                    $('#new-example').val("");
+                }
+            });
+
+
+        }
+
+        function delete_ex(i) {
+            console.log("deleting", i)
+            $.ajax({
+                type: "POST",
+                url: `/api/delete_ex`,
+                data: {
+                    word_give: word,
+                    number_give: i
+                },
+                success: function (response) {
+                    get_examples()
+                }
+            });
+        }
+    </script>
+
+    <style type="text/css">
+        * {
+            font-family: "Do Hyeon", sans-serif;
+        }
+
+        .cover-container {
+            max-width: 60rem;
+            margin: auto;
+        }
+
+        h1,
+        h5 {
+            display: inline;
+        }
+
+        .info {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .review {
+            text-align: center;
+        }
+
+        .reviews {
+            margin-top: 50px;
+        }
+
+        .img-fluid {
+            width: 1300px;
+            margin-top: 100px;
+        }
+
+        .info {
+            color: white;
+        }
+
+        .table {
+            color: white;
+        }
+
+        .float-md-start {
+            width: 50px;
+            color: white;
+        }
+
+        .nav-link {
+            color: white;
+            text-underline: white;
+        }
+
+        .plzcomment {
+            color: white;
+        }
+
+        .btn {
+            color: white;
+        }
+
+        .example_list {
+            color: white;
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+
+<body class="bg-dark cover-container">
+<div>
+    <h3 class="float-md-start mb-0" onclick="reload()"><a href="#">H9C</a></h3>
+    <nav class="nav nav-masthead justify-content-center float-md-end">
+        <!--        <a class="nav-link active" aria-current="page" href="#">Home</a>-->
+        <!--        <a class="nav-link" href="#">Features</a>-->
+        <a href="#" class="nav-link active" aria-current="page" onclick="sign_out()">LOGOUT</a>
+    </nav>
+</div>
+<div class="container">
+    <img src="https://t1.daumcdn.net/cfile/tistory/99CA7F4A5A6ACA1018"
+         class="img-fluid" alt="Responsive image">
+    <div class="info">
+        <h1>{{title}}</h1>
+        <p><h4>{{output}}</h4></p>
+    </div>
+    <div class="reviews">
+        <div id="examples" class="container">
+            <h3 class="plzcomment" style="text-align: center;margin-bottom:1rem">코멘트를 남겨주세요!</h3>
+            <div class="d-flex justify-content-between" style="margin-left:20px;">
+                <input id="new-example" class="form-control form-control-sm" style="margin-right: 0.5rem">
+                <button class="btn btn-outline-secondary btn-sm" onclick="add_ex()">등록!</button>
+            </div>
+            <ul class="example_list" id="example-list">
+                <li id="ex-0"><a href="javascript:delete_ex(0)">delete</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+
+>>>>>>> 7dd96344a4cbb32a1ecb7cd4cff08996d92a1944
 </html>

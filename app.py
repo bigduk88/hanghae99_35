@@ -20,6 +20,7 @@ db = client.dbsparta_plus
 def css():
     return render_template('cover.css')
 
+
 @app.route('/')
 def home():
     token_receive = request.cookies.get('mytoken')
@@ -31,6 +32,7 @@ def home():
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
 
 @app.route('/contents')
 def content():
@@ -44,10 +46,12 @@ def content():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
+
 @app.route('/login')
 def login():
     msg = request.args.get("msg")
     return render_template('login.html', msg=msg)
+
 
 @app.route('/sign_in', methods=['POST'])
 def sign_in():
@@ -71,6 +75,7 @@ def sign_in():
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
+
 @app.route('/sign_up/save', methods=['POST'])
 def sign_up():
     username_receive = request.form['username_give']
@@ -83,39 +88,91 @@ def sign_up():
     db.users.insert_one(doc)
     return jsonify({'result': 'success'})
 
+
 @app.route('/sign_up/check_dup', methods=['POST'])
 def check_dup():
     username_receive = request.form['username_give']
     exists = bool(db.users.find_one({"username": username_receive}))
     return jsonify({'result': 'success', 'exists': exists})
 
+
+######################################
+# 메인 진자 사용 챕터리스트 시작
+
+@app.route('/chptbox', methods=['GET'])
+def chptlist():
+    chtlist = list(db.chptbox.find({}, {'_id': False}))
+    return jsonify({'all_list':chtlist})
+
+@app.route('/contents/<input>')
+def detail(input):
+    sample = db.chptbox.find_one({'num': input})
+    middleput = sample['desc']
+    title = sample['name']
+    print(sample, middleput)
+    return render_template("contents.html", output=middleput, title=title)
+
+# @app.route('/')
+# def main():
+#     msg = request.args.get("msg")
+#     # DB에서 저장된 단어 찾아서 HTML에 나타내기
+#     num = list(db.chptbox.find({}, {"_id": False}))
+#     return render_template("index.html", num=num, name=name, desc=desc)
+
+# @app.route('/contents/<num>')
+# def contents(num):
+#     result = list(db.chptbox.find({}, {'_id': False}))
+#     print(result)
+#     return render_template("contents.html", result=result)
+
+# @app.route('/contents/2')
+# def contents_1():
+#     result = list(db.chptbox.find({}, {'_id': False}))
+#     print(result)
+#     return render_template("contents.html", result=result)
+
+# @app.route('/contents/')
+# def contents():
+#     result = list(db.chptbox.find({}, {'_id': False}))
+#     print(result)
+#     return render_template("contents.html", result=result)
+
+# 메인 진자 사용 챕터리스트 끝
+######################################
+
 ######################################
 # 게시판 글 등록 api 시작
 
-## API 역할을 하는 부분
-@app.route('/review', methods=['POST'])
-def write_review():
-    title_receive = request.form['title_give']
-    author_receive = request.form['author_give']
-    review_receive = request.form['review_give']
+@app.route('/api/get_examples', methods=['GET'])
+def get_exs():
+    word_receive = request.args.get("word_give")
+    result = list(db.examples.find({"word": word_receive}, {'_id': 0}))
+    print(word_receive, len(result))
 
-    doc = {
-        'title': title_receive,
-        'author': author_receive,
-        'review': review_receive
-    }
+    return jsonify({'result': 'success', 'examples': result})
 
-    db.contenst.insert_one(doc)
 
-    return jsonify({'msg': '등록완료!'})
+@app.route('/api/save_ex', methods=['POST'])
+def save_ex():
+    word_receive = request.form['word_give']
+    example_receive = request.form['example_give']
+    doc = {"word": word_receive, "example": example_receive}
+    db.examples.insert_one(doc)
+    return jsonify({'result': 'success', 'msg': f'example "{example_receive}" saved'})
 
-@app.route('/review', methods=['GET'])
-def read_reviews():
-    reviews = list(db.contenst.find({}, {'_id': False}))
-    return jsonify({'all_reviews': reviews})
 
+@app.route('/api/delete_ex', methods=['POST'])
+def delete_ex():
+    word_receive = request.form['word_give']
+    number_receive = int(request.form["number_give"])
+    example = list(db.examples.find({"word": word_receive}))[number_receive]["example"]
+    print(word_receive, example)
+    db.examples.delete_one({"word": word_receive, "example": example})
+    return jsonify({'result': 'success', 'msg': f'example #{number_receive} of "{word_receive}" deleted'})
+
+
+# 게시판 글 등록 api 끝
 ######################################
-
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
