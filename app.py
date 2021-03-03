@@ -26,8 +26,9 @@ def home():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        user_info = db.users.find_one({"username": payload["id"]})
-        return render_template('index.html', user_info=user_info)
+        user_info = db.users.find_one({"username": payload["id"]},{'_id':False,'password':False})
+        user_info_plus = user_info['username']
+        return render_template('index.html', name= user_info_plus)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -39,8 +40,9 @@ def content():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        user_info = db.users.find_one({"username": payload["id"]})
-        return render_template('contents.html', user_info=user_info)
+        user_info = db.users.find_one({"username": payload["id"]},{'_id':False,'password':False})
+        user_info_plus = user_info['username']
+        return render_template('contents.html', name= user_info_plus)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -109,33 +111,7 @@ def detail(input):
     sample = db.chptbox.find_one({'num': input})
     middleput = sample['desc']
     title = sample['name']
-    print(sample, middleput)
     return render_template("contents.html", output=middleput, title=title)
-
-# @app.route('/')
-# def main():
-#     msg = request.args.get("msg")
-#     # DB에서 저장된 단어 찾아서 HTML에 나타내기
-#     num = list(db.chptbox.find({}, {"_id": False}))
-#     return render_template("index.html", num=num, name=name, desc=desc)
-
-# @app.route('/contents/<num>')
-# def contents(num):
-#     result = list(db.chptbox.find({}, {'_id': False}))
-#     print(result)
-#     return render_template("contents.html", result=result)
-
-# @app.route('/contents/2')
-# def contents_1():
-#     result = list(db.chptbox.find({}, {'_id': False}))
-#     print(result)
-#     return render_template("contents.html", result=result)
-
-# @app.route('/contents/')
-# def contents():
-#     result = list(db.chptbox.find({}, {'_id': False}))
-#     print(result)
-#     return render_template("contents.html", result=result)
 
 # 메인 진자 사용 챕터리스트 끝
 ######################################
