@@ -22,6 +22,21 @@
     <title>H9C</title>
 
     <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+
         .X {
             text-anchor: middle;
             position: relative;
@@ -75,57 +90,59 @@
         }
 
         .cover-container {
-            max-width: 80rem;
+            max-width: 60rem;
         }
 
-
-        /*
-         * Header
-         */
-
-        .nav-masthead .nav-link {
-            padding: .25rem 0;
-            font-weight: 700;
-            font-size: 160%;
-            color: rgba(255, 255, 255, .5);
-            background-color: transparent;
-            border-bottom: .25rem solid transparent;
+        .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+            width: 100%;
+            padding-right: var(--bs-gutter-x, .75rem);
+            padding-left: var(--bs-gutter-x, .75rem);
+            margin-right: auto;
+            margin-left: auto
         }
 
-        .nav-masthead .nav-link:hover,
-        .nav-masthead .nav-link:focus {
-            border-bottom-color: rgba(255, 255, 255, .25);
+        @media (min-width: 576px) {
+            .container, .container-sm {
+                max-width: 540px
+            }
         }
 
-        .nav-masthead .nav-link + .nav-link {
-            margin-left: 1rem;
+        @media (min-width: 768px) {
+            .container, .container-md, .container-sm {
+                max-width: 720px
+            }
         }
 
-        .nav-masthead .active {
-            color: #fff;
-            border-bottom-color: #fff;
+        @media (min-width: 992px) {
+            .container, .container-lg, .container-md, .container-sm {
+                max-width: 960px
+            }
         }
+
+        @media (min-width: 1200px) {
+            .container, .container-lg, .container-md, .container-sm, .container-xl {
+                max-width: 1140px
+            }
+        }
+
+        @media (min-width: 1400px) {
+            .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+                max-width: 1320px
+            }
+        }
+
 
     </style>
 
 
     <SCRIPT>
+        function hey() {
+            open('https://www.notion.so/99-35-31e772f7e01942fe920ac4647103dee0')
+        }
+
         function reload() {
             window.location.reload()
         }
-
-        // function addbox(chapter) {
-        //     $.ajax({
-        //         type: 'POST',
-        //         url: '/api/add',
-        //         data: {add_give: chapter},
-        //         success: function (response) {
-        //             alert(response['msg']);
-        //             window.location.reload();
-        //         }
-        //     })
-        // }
-
     </SCRIPT>
 
     <script>
@@ -137,54 +154,58 @@
     </script>
 
 
+    <!-- Custom styles for this template-->
+    <!--    //<link href="cover.css" rel="stylesheet">-->
+
+
 </head>
 <body class="d-flex h-100 text-center text-white bg-dark">
 
-<div class="cover-container w-100 h-100 p-4 mx-auto">
+<div class="cover-container w-100 h-100 p-3 mx-auto">
     <header class="mb-auto">
         <div>
-            <nav class="nav nav-masthead float-md-start mb-0">
-                <div class="nav-link active" onclick="reload()" style="color:red">H9C</div>
-            </nav>
-            <nav class="nav nav-masthead float-md-end">
-                <div class="nav-link active" aria-current="page" onclick="sign_out()">LOGOUT</div>
-                <div class="nav-link" aria-current="page" onclick="">+</div>
+            <h3 class="float-md-start mb-0" onclick="window.location.reload()"><a href="#">H9C</a></h3>
+            <nav class="nav nav-masthead justify-content-center float-md-end">
+                {#                <h3>#}
+                {#                    {% for row in rows %}#}
+                {#                        {% set myname = row["username"] %}#}
+                {##}
+                {#                </h3>#}
+
+
+                <h3 style="color: white"> {{ name }}님 안녕하세요!</h3>
+                <a href="#" class="nav-link active" aria-current="page" onclick="sign_out()">LOGOUT</a>
             </nav>
         </div>
     </header>
-    <main>
-        <!-- class="container mx-auto-all"-->
+
+    <main class="px-3">
+
         <div class="container mx-auto-all">
             <!-- Stack the columns on mobile by making one full-width and the other half-width -->
-
-<!--            현재페이지 onclick="location.href='링크'"-->
-<!--            새창 onclick="window.open('링크')"-->
-<!--            상위프레임 onclick="parent.location.href='링크'"-->
-<!--            팝업 onclick="OpenWin_variety('링크url','창이름',width,height,출력좌표X,출력위치Y)"-->
-
             <div class="row" id="cards-box">
-                <div class="X col-1" onclick="window.open('https://www.notion.so/99-35-31e772f7e01942fe920ac4647103dee0')">
+                <div class="X col-4" onclick="hey()">
                     GotoNotion
                 </div>
-                <div class="X col-4" onclick="location.href='contents'">
+                <div class="X col-4" onclick="location.href='/contents/1'">
                     chapter1
                 </div>
-                <div class="X col-4" onclick="">
+                <div class="X col-4" onclick="location.href='/contents/2'">
                     chapter2
                 </div>
-                <div class="X col-4" onclick="">
+                <div class="X col-4" onclick="location.href='/contents/3'">
                     chapter3
                 </div>
-                <div class="X col-4" onclick="">
+                <div class="X col-4" onclick="location.href='/contents/4'">
                     chapter4
                 </div>
-                <div class="X col-4" onclick="">
+                <div class="X col-4" onclick="location.href='/contents/5'">
                     chapter5
                 </div>
-                <div class="X col-4" onclick="">
+                <div class="X col-4" onclick="location.href='/contents/6'">
                     chapter6
                 </div>
-                <div class="X col-4" onclick="">
+                <div class="X col-4" onclick="location.href='/contents/7'">
                     chapter7
                 </div>
             </div>

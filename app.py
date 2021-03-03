@@ -20,6 +20,7 @@ db = client.dbsparta_plus
 def css():
     return render_template('cover.css')
 
+
 @app.route('/')
 def home():
     token_receive = request.cookies.get('mytoken')
@@ -31,6 +32,7 @@ def home():
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
 
 @app.route('/contents')
 def content():
@@ -44,10 +46,12 @@ def content():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
+
 @app.route('/login')
 def login():
     msg = request.args.get("msg")
     return render_template('login.html', msg=msg)
+
 
 @app.route('/sign_in', methods=['POST'])
 def sign_in():
@@ -71,6 +75,7 @@ def sign_in():
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
+
 @app.route('/sign_up/save', methods=['POST'])
 def sign_up():
     username_receive = request.form['username_give']
@@ -83,11 +88,57 @@ def sign_up():
     db.users.insert_one(doc)
     return jsonify({'result': 'success'})
 
+
 @app.route('/sign_up/check_dup', methods=['POST'])
 def check_dup():
     username_receive = request.form['username_give']
     exists = bool(db.users.find_one({"username": username_receive}))
     return jsonify({'result': 'success', 'exists': exists})
+
+
+######################################
+# 메인 진자 사용 챕터리스트 시작
+
+@app.route('/chptbox', methods=['GET'])
+def chptlist():
+    chtlist = list(db.chptbox.find({}, {'_id': False}))
+    return jsonify({'all_list':chtlist})
+
+@app.route('/contents/<input>')
+def detail(input):
+    sample = db.chptbox.find_one({'num': input})
+    middleput = sample['desc']
+    title = sample['name']
+    print(sample, middleput)
+    return render_template("contents.html", output=middleput, title=title)
+
+# @app.route('/')
+# def main():
+#     msg = request.args.get("msg")
+#     # DB에서 저장된 단어 찾아서 HTML에 나타내기
+#     num = list(db.chptbox.find({}, {"_id": False}))
+#     return render_template("index.html", num=num, name=name, desc=desc)
+
+# @app.route('/contents/<num>')
+# def contents(num):
+#     result = list(db.chptbox.find({}, {'_id': False}))
+#     print(result)
+#     return render_template("contents.html", result=result)
+
+# @app.route('/contents/2')
+# def contents_1():
+#     result = list(db.chptbox.find({}, {'_id': False}))
+#     print(result)
+#     return render_template("contents.html", result=result)
+
+# @app.route('/contents/')
+# def contents():
+#     result = list(db.chptbox.find({}, {'_id': False}))
+#     print(result)
+#     return render_template("contents.html", result=result)
+
+# 메인 진자 사용 챕터리스트 끝
+######################################
 
 ######################################
 # 게시판 글 등록 api 시작
@@ -119,8 +170,9 @@ def delete_ex():
     db.examples.delete_one({"word": word_receive, "example": example})
     return jsonify({'result': 'success', 'msg': f'example #{number_receive} of "{word_receive}" deleted'})
 
-######################################
 
+# 게시판 글 등록 api 끝
+######################################
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
