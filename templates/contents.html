@@ -1,186 +1,260 @@
 <!DOCTYPE html>
 <html lang="ko">
 
-    <head>
-        <!-- Webpage Title -->
-        <title>H9C</title>
+<head>
+    <!-- Webpage Title -->
+    <title>H9C</title>
 
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-              crossorigin="anonymous">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
 
-        <!-- JS -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-                crossorigin="anonymous"></script>
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
 
-        <!-- Bootstrap core CSS -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
-              integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
-              crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 
-        <!-- 구글폰트 -->
-        <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+          crossorigin="anonymous">
 
-        <script type="text/javascript">
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
 
-            $(document).ready(function () {
-                $("#reviews-box").html("");
-                showReview();
-            });
+    <script type="text/javascript">
 
-            function makeReview() {
-                let title = $('#title').val()
-                let author = $('#author').val()
-                let review = $('#bookReview').val()
+        $(document).ready(function () {
+            $("#reviews-box").html("");
+            showReview();
+        });
 
-                $.ajax({
-                    type: "POST",
-                    url: "/review",
-                    data: {title_give:title, author_give:author, review_give: review},
-                    success: function (response) {
-                        alert(response["msg"]);
-                        window.location.reload();
-                    }
-                })
-            }
+        function makeReview() {
+            let title = $('#title').val()
+            let author = $('#author').val()
+            let review = $('#bookReview').val()
 
-            function showReview() {
-                $.ajax({
-                    type: "GET",
-                    url: "/review",
-                    data: {},
-                    success: function (response) {
-                        let reviews = response['all_reviews']
-                        for (let i =0; i < reviews.length; i++) {
-                            let title = reviews[i]['title']
-                            let author = reviews[i]['author']
-                            let review = reviews[i]['review']
+            $.ajax({
+                type: "POST",
+                url: "/review",
+                data: {title_give: title, author_give: author, review_give: review},
+                success: function (response) {
+                    alert(response["msg"]);
+                    window.location.reload();
+                }
+            })
+        }
 
-                            let temp_html = `<tr>
+        function showReview() {
+            $.ajax({
+                type: "GET",
+                url: "/review",
+                data: {},
+                success: function (response) {
+                    let reviews = response['all_reviews']
+                    for (let i = 0; i < reviews.length; i++) {
+                        let title = reviews[i]['title']
+                        let author = reviews[i]['author']
+                        let review = reviews[i]['review']
+
+                        let temp_html = `<tr>
                                                 <td>${title}</td>
                                                 <td>${author}</td>
                                                 <td>${review}</td>
                                             </tr>`
-                            $('#reviews-box').append(temp_html)
-                        }
+                        $('#reviews-box').append(temp_html)
                     }
-                })
-            }
-        </script>
+                }
+            })
+        }
 
-        <style type="text/css">
-            * {
-                font-family: "Do Hyeon", sans-serif;
-            }
 
-            .cover-container {
-                max-width: 60rem;
-                margin: auto;
-            }
+    </script>
+    <script>
+        function sign_out() {
+            $.removeCookie('mytoken', {path: '/'});
+            alert('로그아웃!')
+            window.location.href = "/login"
+        }
+    </script>
+    <script>
+        function reload() {
+            window.location.href = "/"
+        }
+    </script>
 
-            h1,
-            h5 {
-                display: inline;
-            }
+    <script>
+        let word = "{{ word }}"
+        $(document).ready(function () {
+            get_examples()
+        })
 
-            .info {
-                margin-top: 20px;
-                margin-bottom: 20px;
-            }
+        function get_examples() {
+            $("#example-list").empty()
+            $.ajax({
+                type: "GET",
+                url: `/api/get_examples?word_give=${word}`,
+                data: {},
+                success: function (response) {
+                    let examples = response["examples"];
+                    for (let i = 0; i < examples.length; i++) {
+                        let example = examples[i]["example"];
+                        console.log(example)
+                        let html_temp = `<li id="ex-${i}">${example}&nbsp;&nbsp;&nbsp;<a
+                            href="javascript:delete_ex(${i})">delete</a></li>`
+                        $("#example-list").append(html_temp)
+                    }
+                }
+            });
+        }
 
-            .review {
-                text-align: center;
+        function add_ex() {
+            let new_ex = $('#new-example').val();
+            if (!new_ex.toLowerCase().includes(word.toLowerCase())) {
+                alert(`the word '${word}' is not included.`);
+                return;
             }
+            console.log(new_ex)
+            $.ajax({
+                type: "POST",
+                url: `/api/save_ex`,
+                data: {
+                    word_give: word,
+                    example_give: new_ex
+                },
+                success: function (response) {
+                    get_examples();
+                    $('#new-example').val("");
+                }
+            });
 
-            .reviews {
-                margin-top: 100px;
-            }
 
-            .img-fluid {
-                width: 1300px;
-                margin-top: 100px;
-            }
+        }
 
-            .info {
-                color: white;
-            }
+        function delete_ex(i) {
+            console.log("deleting", i)
+            $.ajax({
+                type: "POST",
+                url: `/api/delete_ex`,
+                data: {
+                    word_give: word,
+                    number_give: i
+                },
+                success: function (response) {
+                    get_examples()
+                }
+            });
+        }
+    </script>
 
-            .table {
-                color: white;
-            }
+    <style type="text/css">
+        * {
+            font-family: "Do Hyeon", sans-serif;
+        }
 
-            .float-md-start {
-                width: 50px;
-                color: white;
-            }
+        .cover-container {
+            max-width: 60rem;
+            margin: auto;
+        }
 
-            .nav-link {
-                color: white;
-                text-underline: white;
-            }
-        </style>
-    </head>
+        h1,
+        h5 {
+            display: inline;
+        }
 
-    <body class="bg-dark cover-container">
-        <div>
-            <h3 class="float-md-start mb-0"><a href="#">H9C</a></h3>
-            <nav class="nav nav-masthead justify-content-center float-md-end">
-                <!--        <a class="nav-link active" aria-current="page" href="#">Home</a>-->
-                <!--        <a class="nav-link" href="#">Features</a>-->
-                <a class="nav-link active" aria-current="page" href="#">LOGIN</a>
-            </nav>
-        </div>
-        <div class="container" >
-            <img src="https://t1.daumcdn.net/cfile/tistory/99CA7F4A5A6ACA1018"
-                 class="img-fluid" alt="Responsive image">
-            <div class="info">
-                <h1>항해에서 느낀점을 적어주세요!</h1>
-                <p>항해를 하며 어려웠던 점이나 재미 있었던점, 기억하고 싶은 것들을 남겨두면 어떨까요?</p>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">제목</span>
-                    </div>
-                    <input type="text" class="form-control" id="title">
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">닉네임</span>
-                    </div>
-                    <input type="text" class="form-control" id="author">
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">코멘트</span>
-                    </div>
-                    <textarea class="form-control" id="bookReview"
-                              cols="30"
-                              rows="5" placeholder="140자까지 입력할 수 있습니다."></textarea>
-                </div>
-                <div class="review">
-                    <button onclick="makeReview()" type="button" class="btn btn-primary">리뷰 작성하기</button>
-                </div>
+        .info {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .review {
+            text-align: center;
+        }
+
+        .reviews {
+            margin-top: 50px;
+        }
+
+        .img-fluid {
+            width: 1300px;
+            margin-top: 100px;
+        }
+
+        .info {
+            color: white;
+        }
+
+        .table {
+            color: white;
+        }
+
+        .float-md-start {
+            width: 50px;
+            color: white;
+        }
+
+        .nav-link {
+            color: white;
+            text-underline: white;
+        }
+
+        .plzcomment {
+            color: white;
+        }
+
+        .btn {
+            color: white;
+        }
+
+        .example_list {
+            color: white;
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+
+<body class="bg-dark cover-container">
+<div>
+    <h3 class="float-md-start mb-0" onclick="reload()"><a href="#">H9C</a></h3>
+    <nav class="nav nav-masthead justify-content-center float-md-end">
+        <!--        <a class="nav-link active" aria-current="page" href="#">Home</a>-->
+        <!--        <a class="nav-link" href="#">Features</a>-->
+        <a href="#" class="nav-link active" aria-current="page" onclick="sign_out()">LOGOUT</a>
+    </nav>
+</div>
+<div class="container">
+    <img src="https://t1.daumcdn.net/cfile/tistory/99CA7F4A5A6ACA1018"
+         class="img-fluid" alt="Responsive image">
+    <div class="info">
+        <h1>항해에서 느낀점을 적어주세요!</h1>
+        <p>항해를 하며 어려웠던 점이나 재미 있었던점, 기억하고 싶은 것들을 남겨두면 어떨까요?</p>
+    </div>
+    <div class="reviews">
+        <div id="examples" class="container">
+            <h3 class="plzcomment" style="text-align: center;margin-bottom:1rem">코멘트를 남겨주세요!</h3>
+            <div class="d-flex justify-content-between" style="margin-left:20px;">
+                <input id="new-example" class="form-control form-control-sm" style="margin-right: 0.5rem">
+                <button class="btn btn-outline-secondary btn-sm" onclick="add_ex()">등록!</button>
             </div>
-           <div class="reviews">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">제목</th>
-                        <th scope="col">닉네임</th>
-                        <th scope="col">코멘트</th>
-                    </tr>
-                    </thead>
-                    <tbody id="reviews-box">
-                    </tbody>
-                </table>
-            </div>
+            <ul class="example_list" id="example-list">
+                <li id="ex-0">This sentence contains the word 'word'.&nbsp;&nbsp;&nbsp;<a
+                        href="javascript:delete_ex(0)">delete</a></li>
+                <li id="ex-1">I don't like using the MS Word program.&nbsp;&nbsp;&nbsp;<a
+                        href="javascript:delete_ex(1)">delete</a></li>
+            </ul>
         </div>
-    </body>
+    </div>
+</div>
+</body>
 
 </html>

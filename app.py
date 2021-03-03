@@ -92,27 +92,32 @@ def check_dup():
 ######################################
 # 게시판 글 등록 api 시작
 
-## API 역할을 하는 부분
-@app.route('/review', methods=['POST'])
-def write_review():
-    title_receive = request.form['title_give']
-    author_receive = request.form['author_give']
-    review_receive = request.form['review_give']
+@app.route('/api/get_examples', methods=['GET'])
+def get_exs():
+    word_receive = request.args.get("word_give")
+    result = list(db.examples.find({"word": word_receive}, {'_id': 0}))
+    print(word_receive, len(result))
 
-    doc = {
-        'title': title_receive,
-        'author': author_receive,
-        'review': review_receive
-    }
+    return jsonify({'result': 'success', 'examples': result})
 
-    db.contenst.insert_one(doc)
 
-    return jsonify({'msg': '등록완료!'})
+@app.route('/api/save_ex', methods=['POST'])
+def save_ex():
+    word_receive = request.form['word_give']
+    example_receive = request.form['example_give']
+    doc = {"word": word_receive, "example": example_receive}
+    db.examples.insert_one(doc)
+    return jsonify({'result': 'success', 'msg': f'example "{example_receive}" saved'})
 
-@app.route('/review', methods=['GET'])
-def read_reviews():
-    reviews = list(db.contenst.find({}, {'_id': False}))
-    return jsonify({'all_reviews': reviews})
+
+@app.route('/api/delete_ex', methods=['POST'])
+def delete_ex():
+    word_receive = request.form['word_give']
+    number_receive = int(request.form["number_give"])
+    example = list(db.examples.find({"word": word_receive}))[number_receive]["example"]
+    print(word_receive, example)
+    db.examples.delete_one({"word": word_receive, "example": example})
+    return jsonify({'result': 'success', 'msg': f'example #{number_receive} of "{word_receive}" deleted'})
 
 ######################################
 

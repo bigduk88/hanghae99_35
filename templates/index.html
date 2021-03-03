@@ -143,13 +143,16 @@
         function reload() {
             window.location.reload()
         }
+    </SCRIPT>
 
+    <script>
         function sign_out() {
             $.removeCookie('mytoken', {path: '/'});
             alert('로그아웃!')
             window.location.href = "/login"
         }
     </script>
+
 
 
     <!-- Custom styles for this template-->
