@@ -2,8 +2,7 @@ from pymongo import MongoClient
 import jwt
 import datetime
 import hashlib
-from flask import Flask, render_template, jsonify, request, redirect, url_for, session
-from werkzeug.utils import secure_filename
+from flask import Flask, render_template, jsonify, request, redirect, url_for
 from datetime import datetime, timedelta
 
 app = Flask(__name__)
@@ -16,33 +15,14 @@ client = MongoClient('mongodb://localhost', 27017)
 db = client.dbsparta_plus
 
 
-@app.route('/cover')
-def css():
-    return render_template('cover.css')
-
-
 @app.route('/')
 def home():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        user_info = db.users.find_one({"username": payload["id"]},{'_id':False,'password':False})
+        user_info = db.users.find_one({"username": payload["id"]},{'_id':False,'password':False})  ## 진자용
         user_info_plus = user_info['username']
         return render_template('index.html', name= user_info_plus)
-    except jwt.ExpiredSignatureError:
-        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
-    except jwt.exceptions.DecodeError:
-        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
-
-
-@app.route('/contents')
-def content():
-    token_receive = request.cookies.get('mytoken')
-    try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        user_info = db.users.find_one({"username": payload["id"]},{'_id':False,'password':False})
-        user_info_plus = user_info['username']
-        return render_template('contents.html', name= user_info_plus)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -98,67 +78,54 @@ def check_dup():
     return jsonify({'result': 'success', 'exists': exists})
 
 
-######################################
-# 메인 진자 사용 챕터리스트 시작
+@app.route('/review', methods=['POST'])
+def write_review():
+    author_receive = request.form['author_give']
+    review_receive = request.form['review_give']
+    chapter_receive = request.form['chapter_give']
 
-@app.route('/chptbox', methods=['GET'])
-def chptlist():
-    chtlist = list(db.chptbox.find({}, {'_id': False}))
-    return jsonify({'all_list':chtlist})
+    doc = {
+        'author': author_receive,
+        'review': review_receive,
+        'chapter': chapter_receive
+    }
 
-@app.route('/contents/<input>')
-def detail(input):
-    sample = db.chptbox.find_one({'num': input})
-    middleput = sample['desc']
-    title = sample['name']
-    return render_template("contents.html", output=middleput, title=title)
+    db.contenst.insert_one(doc)
 
-# 메인 진자 사용 챕터리스트 끝
-######################################
+    return jsonify({'msg': '등록완료!'})
 
-######################################
-# 게시판 글 등록 api 시작
 
-@app.route('/api/get_examples', methods=['GET'])
-def get_exs():
-    word_receive = request.args.get("word_give")
-    result = list(db.examples.find({"word": word_receive}, {'_id': False}))
-    return jsonify({'result': 'success', 'examples': result})
-
-<<<<<<< HEAD
-=======
 @app.route('/contents/<pn>')
 def contents(pn):
-    samples = list(db.contenst.find({'chapter': pn}, {'_id': False}))
-    sample2 = db.chptbox.find_one({'num': pn})
-    middleput = sample2['desc']
-    output = sample2['name']
-    return render_template("contents.html", samples=samples, middleput=middleput, output=output, pn=pn)
->>>>>>> parent of 5963324 (회원 아이디 뜨는 기능 추가)
-=======
->>>>>>> parent of 85790d4 (진짜 초ㅓㅣ종)
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload["id"]},{'_id':False,'password':False})
+        user_info_plus = user_info['username']
 
-@app.route('/api/save_ex', methods=['POST'])
-def save_ex():
-    word_receive = request.form['word_give']
-    example_receive = request.form['example_give']
-    doc = {"word": word_receive, "example": example_receive}
-    db.examples.insert_one(doc)
-    return jsonify({'result': 'success', 'msg': f'example "{example_receive}" saved'})
+        samples = list(db.contenst.find({'chapter': pn}, {'_id': False}))
+        sample2 = db.chptbox.find_one({'num': pn})
 
+        middleput = sample2['desc']
+        output = sample2['name']
 
-@app.route('/api/delete_ex', methods=['POST'])
-def delete_ex():
-    word_receive = request.form['word_give']
-    number_receive = int(request.form["number_give"])
-    example = list(db.examples.find({"word": word_receive}))[number_receive]["example"]
-    print(word_receive, example)
-    db.examples.delete_one({"word": word_receive, "example": example})
-    return jsonify({'result': 'success', 'msg': f'example #{number_receive} of "{word_receive}" deleted'})
+        return render_template('contents.html', name= user_info_plus, samples=samples, middleput=middleput, output=output, pn=pn)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
-
-# 게시판 글 등록 api 끝
-######################################
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
+
+
+# db 작업 초기 1회용
+# doc = [{'num': '1', 'name': 'chapter 1 : 웹개발 미니 프로젝트', 'desc': '사전준비 지식을 바탕으로, 첫 번째 팀 프로젝트 완성해보기'},
+#         {'num': '2', 'name': 'chapter 2 : 자료구조, 알고리즘', 'desc': '매일 할당된 알고리즘을 풀어내기, 문제은행의 바다에 빠져보기'},
+#         {'num': '3', 'name': 'chapter 3 : 주특기 기본/심화', 'desc': '주특기 기본/심화에 맞춰 필요한 기술을 적용하며 프로젝트 2회 완성'},
+#         {'num': '4', 'name': 'chapter 4 : 클론코딩', 'desc': '실제 서비스를 클론코딩하며 실전 퀄리티에 대비하기'},
+#         {'num': '5', 'name': 'chapter 5 : 미니프로젝트', 'desc': '각자의 주특기를 가지고 2주만에 실제 서비스를 만들어 런칭'},
+#         {'num': '6', 'name': 'chapter 6 : 실전프로젝트', 'desc': '디자이너와 협업하며 4주만에 실제 프로젝트를 런칭하고, 1주 동안 고객의 의견을 모아 개선'},
+#         {'num': '7', 'name': 'chapter 7 : 지원하기', 'desc': '이력서를 작성하고, 면접을 연습하고 -> 협력사에 지원하기'}]
+# db.chptbox.insert_many(doc)

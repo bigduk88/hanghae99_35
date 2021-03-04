@@ -2,34 +2,36 @@
 <html lang="ko">
 
 <head>
-    <!-- Webpage Title -->
-    <title>H9C</title>
-
-    <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-          crossorigin="anonymous">
+    <meta property="og:title" content="H9C"/>
+    <meta property="og:description" content="항해99 커뮤니티입니다."/>
+    <meta property="og:image" content="{{ url_for('static', filename='ogimg.png') }}"/>
 
-    <!-- JS -->
+    <link rel="shortcut icon" href="static/h9cicon.svg">
+    <link rel="icon" href="static/h9cicon.svg">
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <!-- ajax, jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
             crossorigin="anonymous"></script>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 
-    <!-- Bootstrap core CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
-          crossorigin="anonymous">
+    <title>H9C | 챕터별 코멘트</title>
 
-    <!-- 구글폰트 -->
-    <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+          rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+
 
     <script type="text/javascript">
 
@@ -54,34 +56,9 @@
                 }
             })
         }
-
-        {#function showReview() {#}
-        {#    $.ajax({#}
-        {#        type: "GET",#}
-        {#        url: "/review",#}
-        {#        data: {},#}
-        {#        success: function (response) {#}
-        {#            let reviews = response['all_reviews']#}
-        {#            for (let i = 0; i < reviews.length; i++) {#}
-        {#                let title = reviews[i]['title']#}
-        {#                let author = reviews[i]['author']#}
-        {#                let review = reviews[i]['review']#}
-        {#                let chapter = reviews[i]['chapter']#}
-        {##}
-        {#                let temp_html = `<tr>#}
-        {#                                        <td>${chapter}</td>#}
-        {#                                        <td>${title}</td>#}
-        {#                                        <td>${author}</td>#}
-        {#                                        <td>${review}</td>#}
-        {#                                    </tr>`#}
-        {#                $('#reviews-box').append(temp_html)#}
-        {#            }#}
-        {#        }#}
-        {#    })#}
-        {##}
-
-
     </script>
+
+
     <script>
         function sign_out() {
             $.removeCookie('mytoken', {path: '/'});
@@ -95,14 +72,29 @@
         }
     </script>
 
-    <style type="text/css">
+    <style>
         * {
-            font-family: "Do Hyeon", sans-serif;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-weight: 500;
+            letter-spacing: -0.05rem;
+        }
+
+        .hi {
+            padding-top: 10px;
+            font-size: 18px;
+        }
+
+        .name {
+            font-weight: 1000;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .mx-auto-all {
+            margin-top: 7vh
         }
 
         .cover-container {
-            max-width: 60rem;
-            margin: auto;
+            max-width: 70rem;
         }
 
         h1,
@@ -141,72 +133,132 @@
             color: white;
         }
 
-        .nav-link {
-            color: white;
-            text-underline: white;
+        .button.is-sparta {
+            background-color: slategrey;
+            border-color: transparent;
+            color: #fff !important;
+            padding: 1rem;
+        }
+
+        .input {
+            padding: 1rem;
+        }
+
+        .button.is-sparta:hover {
+            background-color: red;
+            border-color: transparent;
+            color: #fff !important;
+            padding: 1rem;
+        }
+
+        .button.is-sparta.is-outlined {
+            background-color: transparent;
+            border-color: red;
+            color: red !important;
+            padding: 1rem;
+        }
+
+        .nav-masthead .nav-link {
+            padding: .25rem 0;
+            font-weight: 500;
+            font-size: 160%;
+            color: rgba(255, 255, 255, .5);
+            background-color: transparent;
+            border-bottom: .4rem solid transparent;
+        }
+
+        .nav-masthead .nav-link:hover,
+        .nav-masthead .nav-link:focus {
+            border-bottom-color: rgba(255, 255, 255, .25);
+        }
+
+        .nav-masthead .nav-link + .nav-link {
+            margin-left: 1rem;
+        }
+
+        .nav-masthead .active {
+            color: #fff;
+            border-bottom-color: #fff;
+        }
+
+        .nav-masthead .activer {
+            color: red;
+            border-bottom-color: red;
         }
     </style>
 </head>
 
-<body class="bg-dark cover-container">
-<div>
-    <h3 class="float-md-start mb-0" onclick="reload()"><a href="#">H9C</a></h3>
-    <nav class="nav nav-masthead justify-content-center float-md-end">
-        <!--        <a class="nav-link active" aria-current="page" href="#">Home</a>-->
-        <!--        <a class="nav-link" href="#">Features</a>-->
-        <h3 style="color: white"> {{ name }}님 안녕하세요!</h3>
-        <a href="#" class="nav-link active" aria-current="page" onclick="sign_out()">LOGOUT</a>
-    </nav>
-</div>
-<div class="container">
-    <img src="https://t1.daumcdn.net/cfile/tistory/99CA7F4A5A6ACA1018"
-         class="img-fluid" alt="Responsive image">
-    <div class="info">
-        <h4>{{ output }}</h4>
-        <h4>{{ middleput }}</h4>
-    </div>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <span class="input-group-text">닉네임</span>
+
+<body class="d-flex h-100 text-center text-white bg-dark">
+<div class="cover-container w-100 h-100 p-4 mx-auto">
+    <header class="mb-auto">
+        <div>
+            <nav class="nav nav-masthead float-md-start mb-0">
+                <div class="nav-link activer" onclick="location.href='/'" style="color:red"><img
+                        src="../static/hh9cm.svg"
+                        width="110" height="45"></div>
+            </nav>
+            <nav class="nav nav-masthead float-md-end">
+                <div class="hi"><span class="name">{{ name }}</span>님 안녕하세요!&nbsp;&nbsp;</div>
+                <div class="nav-link active" aria-current="page" onclick="sign_out()">LOGOUT</div>
+            </nav>
         </div>
-        <input type="text" class="form-control" id="author">
-    </div>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <span class="input-group-text">코멘트</span>
+    </header>
+
+    <main>
+        <div class="container mx-auto-all row">
+            <div class="col-6">
+                <img src="https://t1.daumcdn.net/cfile/tistory/99CA7F4A5A6ACA1018"
+                     class="img-fluid" alt="Responsive image">
+                <div class="info">
+                    <h3>{{ output }}</h3>
+                    <h6>{{ middleput }}</h6>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text button is-sparta is-outlined">닉네임</span>
+                    </div>
+                    <input type="text" class="form-control input" id="author">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text button is-sparta is-outlined">코멘트</span>
+                    </div>
+                    <textarea class="form-control input" id="bookReview"
+                              cols="30"
+                              rows="5" placeholder="140자까지 입력할 수 있습니다."></textarea>
+                </div>
+                <div class="review">
+                    <button onclick="makeReview()" type="button" class="btn button is-sparta">리뷰 작성하기</button>
+                </div>
+            </div>
+
+            <div class="col-6">
+                <div class="reviews">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col" rowspan="10rem">닉네임</th>
+                            <th scope="col" rowspan="6">코멘트</th>
+                        </tr>
+                        </thead>
+                        {% for sample in samples %}
+                            {% set author = sample['author'] %}
+                            {% set review = sample['review'] %}
+                            <tr>
+                                <td>{{ author }}</td>
+                                <td>{{ review }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
         </div>
-        <textarea class="form-control" id="bookReview"
-                  cols="30"
-                  rows="5" placeholder="140자까지 입력할 수 있습니다."></textarea>
-    </div>
-    <div class="review">
-        <button onclick="makeReview()" type="button" class="btn btn-primary">리뷰 작성하기</button>
-    </div>
+    </main>
+
+    <footer class="mt-auto text-white-50"></footer>
 </div>
-<div class="reviews">
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">닉네임</th>
-            <th scope="col">코멘트</th>
-        </tr>
 
 
-        {% for sample in samples %}
-            {% set author = sample['author'] %}
-            {% set review = sample['review'] %}
-            <tr>
-                <td>{{ author }}</td>
-                <td>{{ review }}</td>
-            </tr>
-        {% endfor %}
-
-        </thead>
-        <tbody id="reviews-box">
-        </tbody>
-    </table>
-</div>
-</div>
 </body>
-
 </html>
