@@ -31,6 +31,57 @@
     <!-- 구글폰트 -->
     <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
 
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#reviews-box").html("");
+            //showReview();
+        });
+
+
+        function makeReview() {
+            {#let title = $('#title').val()#}
+            let author = $('#author').val()
+            let review = $('#bookReview').val()
+
+            $.ajax({
+                type: "POST",
+                url: "/review",
+                data: {author_give: author, review_give: review, chapter_give: {{ pn }}},
+                success: function (response) {
+                    alert(response["msg"]);
+                    window.location.reload();
+                }
+            })
+        }
+
+        {#function showReview() {#}
+        {#    $.ajax({#}
+        {#        type: "GET",#}
+        {#        url: "/review",#}
+        {#        data: {},#}
+        {#        success: function (response) {#}
+        {#            let reviews = response['all_reviews']#}
+        {#            for (let i = 0; i < reviews.length; i++) {#}
+        {#                let title = reviews[i]['title']#}
+        {#                let author = reviews[i]['author']#}
+        {#                let review = reviews[i]['review']#}
+        {#                let chapter = reviews[i]['chapter']#}
+        {##}
+        {#                let temp_html = `<tr>#}
+        {#                                        <td>${chapter}</td>#}
+        {#                                        <td>${title}</td>#}
+        {#                                        <td>${author}</td>#}
+        {#                                        <td>${review}</td>#}
+        {#                                    </tr>`#}
+        {#                $('#reviews-box').append(temp_html)#}
+        {#            }#}
+        {#        }#}
+        {#    })#}
+        {##}
+
+
+    </script>
     <script>
         function sign_out() {
             $.removeCookie('mytoken', {path: '/'});
@@ -38,72 +89,9 @@
             window.location.href = "/login"
         }
     </script>
-
     <script>
         function reload() {
             window.location.href = "/"
-        }
-    </script>
-
-    <script>
-        let word = "{{ num }}"
-        $(document).ready(function () {
-            get_examples()
-        })
-
-        function get_examples() {
-            $("#example-list").empty()
-            $.ajax({
-                type: "GET",
-                url: `/api/get_examples?word_give=${word}`,
-                data: {},
-                success: function (response) {
-                    let examples = response["examples"];
-                    for (let i = 0; i < examples.length; i++) {
-                        let example = examples[i]["example"];
-                        console.log(example)
-                        let html_temp = `<li id="ex-${i}">${example}&nbsp;&nbsp;&nbsp;<a
-                            href="javascript:delete_ex(${i})">delete</a></li>`
-                        $("#example-list").append(html_temp)
-                    }
-                }
-            });
-        }
-
-        function add_ex() {
-            let new_ex = $('#new-example').val();
-            if (!new_ex.toLowerCase().includes(word.toLowerCase())) {
-                alert();
-                return;
-            }
-            console.log(new_ex)
-            $.ajax({
-                type: "POST",
-                url: `/api/save_ex`,
-                data: {
-                    word_give: word,
-                    example_give: new_ex
-                },
-                success: function (response) {
-                    get_examples();
-                    $('#new-example').val("");
-                }
-            });
-        }
-
-        function delete_ex(i) {
-            console.log("deleting", i)
-            $.ajax({
-                type: "POST",
-                url: `/api/delete_ex`,
-                data: {
-                    word_give: word,
-                    number_give: i
-                },
-                success: function (response) {
-                    get_examples()
-                }
-            });
         }
     </script>
 
@@ -132,7 +120,7 @@
         }
 
         .reviews {
-            margin-top: 50px;
+            margin-top: 100px;
         }
 
         .img-fluid {
@@ -157,20 +145,6 @@
             color: white;
             text-underline: white;
         }
-
-        .plzcomment {
-            color: white;
-        }
-
-        .btn {
-            color: white;
-        }
-
-        .example_list {
-            color: white;
-            margin-top: 20px;
-        }
-
     </style>
 </head>
 
@@ -188,21 +162,50 @@
     <img src="https://t1.daumcdn.net/cfile/tistory/99CA7F4A5A6ACA1018"
          class="img-fluid" alt="Responsive image">
     <div class="info">
-        <h1>{{title}}</h1>
-        <p><h4>{{output}}</h4></p>
+        <h4>{{ output }}</h4>
+        <h4>{{ middleput }}</h4>
     </div>
-    <div class="reviews">
-        <div id="examples" class="container">
-            <h3 class="plzcomment" style="text-align: center;margin-bottom:1rem">코멘트를 남겨주세요!</h3>
-            <div class="d-flex justify-content-between" style="margin-left:20px;">
-                <input id="new-example" class="form-control form-control-sm" style="margin-right: 0.5rem">
-                <button class="btn btn-outline-secondary btn-sm" onclick="add_ex()">등록!</button>
-            </div>
-            <ul class="example_list" id="example-list">
-                <li id="ex-0"><a href="javascript:delete_ex(0)">delete</a></li>
-            </ul>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">닉네임</span>
         </div>
+        <input type="text" class="form-control" id="author">
     </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">코멘트</span>
+        </div>
+        <textarea class="form-control" id="bookReview"
+                  cols="30"
+                  rows="5" placeholder="140자까지 입력할 수 있습니다."></textarea>
+    </div>
+    <div class="review">
+        <button onclick="makeReview()" type="button" class="btn btn-primary">리뷰 작성하기</button>
+    </div>
+</div>
+<div class="reviews">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">닉네임</th>
+            <th scope="col">코멘트</th>
+        </tr>
+
+
+        {% for sample in samples %}
+            {% set author = sample['author'] %}
+            {% set review = sample['review'] %}
+            <tr>
+                <td>{{ author }}</td>
+                <td>{{ review }}</td>
+            </tr>
+        {% endfor %}
+
+        </thead>
+        <tbody id="reviews-box">
+        </tbody>
+    </table>
+</div>
 </div>
 </body>
 
