@@ -122,9 +122,7 @@ def detail(input):
 @app.route('/api/get_examples', methods=['GET'])
 def get_exs():
     word_receive = request.args.get("word_give")
-    result = list(db.examples.find({"word": word_receive}, {'_id': 0}))
-    print(word_receive, len(result))
-
+    result = list(db.examples.find({"word": word_receive}, {'_id': False}))
     return jsonify({'result': 'success', 'examples': result})
 
 

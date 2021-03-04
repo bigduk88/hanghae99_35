@@ -46,7 +46,7 @@
     </script>
 
     <script>
-        let word = "{{ word }}"
+        let word = "{{ num }}"
         $(document).ready(function () {
             get_examples()
         })
@@ -73,7 +73,7 @@
         function add_ex() {
             let new_ex = $('#new-example').val();
             if (!new_ex.toLowerCase().includes(word.toLowerCase())) {
-                alert(`the word '${word}' is not included.`);
+                alert();
                 return;
             }
             console.log(new_ex)
@@ -89,8 +89,6 @@
                     $('#new-example').val("");
                 }
             });
-
-
         }
 
         function delete_ex(i) {
