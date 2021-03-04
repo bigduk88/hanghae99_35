@@ -152,11 +152,22 @@ def write_review():
 
 @app.route('/contents/<pn>')
 def contents(pn):
-    samples = list(db.contenst.find({'chapter': pn}, {'_id': False}))
-    sample2 = db.chptbox.find_one({'num': pn})
-    middleput = sample2['desc']
-    output = sample2['name']
-    return render_template("contents.html", samples=samples, middleput=middleput, output=output, pn=pn)
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload["id"]},{'_id':False,'password':False})
+        user_info_plus = user_info['username']
+        samples = list(db.contenst.find({'chapter': pn}, {'_id': False}))
+        sample2 = db.chptbox.find_one({'num': pn})
+        middleput = sample2['desc']
+        output = sample2['name']
+        return render_template('contents.html', name= user_info_plus,samples=samples, middleput=middleput, output=output, pn=pn)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
+
 
 
 # token_receive = request.cookies.get('mytoken')
