@@ -125,6 +125,15 @@ def get_exs():
     result = list(db.examples.find({"word": word_receive}, {'_id': False}))
     return jsonify({'result': 'success', 'examples': result})
 
+=======
+@app.route('/contents/<pn>')
+def contents(pn):
+    samples = list(db.contenst.find({'chapter': pn}, {'_id': False}))
+    sample2 = db.chptbox.find_one({'num': pn})
+    middleput = sample2['desc']
+    output = sample2['name']
+    return render_template("contents.html", samples=samples, middleput=middleput, output=output, pn=pn)
+>>>>>>> parent of 5963324 (회원 아이디 뜨는 기능 추가)
 
 @app.route('/api/save_ex', methods=['POST'])
 def save_ex():
