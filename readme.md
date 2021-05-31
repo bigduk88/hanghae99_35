@@ -8,3 +8,5 @@
 ## Built With / 누구랑 만들었나요?
 * 이성현(링크) - HTML, CSS, PYTHON
 * 최경민(링크) - HTML, CSS, PYTHON
+
+https://youtu.be/DdtnnYd3FhQ
